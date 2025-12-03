@@ -1,23 +1,21 @@
-# app.py – The Art of Data (2025 Aesthetic Edition)
+# app.py – The Art of Data (2025 Aesthetic Collection) – FINAL FIXED VERSION
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.figure_factory as ff
 import pandas as pd
 import numpy as np
 
-st.set_page_config(page_title="The Art of Data", layout="wide", page_icon="🎨")
+st.set_page_config(page_title="The Art of Data", layout="wide", page_icon="Art")
+
 st.title("The Art of Data — 2025 Aesthetic Collection")
 st.markdown("Nine different chart masterpieces — all live, interactive, and beautiful.")
 
 df = px.data.gapminder().query("year==2007")
-sales = pd.DataFrame({
-    "month": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-    "2024": np.random.randint(80, 300, 12),
-    "2025": np.random.randint(100, 350, 12)
-})
 
 col1, col2, col3 = st.columns(3)
 
+# COLUMN 1
 with col1:
     st.subheader("3D Globe Population")
     fig = px.scatter_geo(df, locations="iso_alpha", size="pop", color="continent",
@@ -47,6 +45,7 @@ with col1:
     fig.update_layout(height=300, paper_bgcolor="black", font=dict(color="white"))
     st.plotly_chart(fig, use_container_width=True)
 
+# COLUMN 2
 with col2:
     st.subheader("Moon Phase Sankey")
     fig = go.Figure(go.Sankey(
@@ -81,6 +80,7 @@ with col2:
                       height=400, paper_bgcolor="black", plot_bgcolor="black")
     st.plotly_chart(fig, use_container_width=True)
 
+# COLUMN 3
 with col3:
     st.subheader("Cherry Blossom Tree Map")
     fig = px.treemap(df, path=['continent', 'country'], values='pop',
@@ -92,9 +92,10 @@ with col3:
     x = np.linspace(-3, 3, 50)
     y = np.linspace(-3, 3, 50)
     X, Y = np.meshgrid(x, y)
-    U = -Y; V = X
-    fig = go.Figure(go.Streamline(x=x, y=y, u=U, v=V, density=30,
-                                   arrow_scale=0.2, line=dict(color='cyan')))
+    U = -Y
+    V = X
+    fig = ff.create_streamline(x, y, U, V, density=2.5, arrow_scale=0.2,
+                               line=dict(color='cyan', width=2))
     fig.update_layout(height=400, paper_bgcolor="black", plot_bgcolor="black")
     st.plotly_chart(fig, use_container_width=True)
 
